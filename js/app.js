@@ -10,7 +10,7 @@ var gBoard;
 var gGamerPos;
 
 let Score = 0;
-let gBall=2;
+let gBall = 2;
 let interval;
 
 function initGame() {
@@ -18,6 +18,9 @@ function initGame() {
 	gBoard = buildBoard();
 	renderBoard(gBoard);
 
+	Score = 0;
+	gBall = 2;
+	renderScore(document.getElementById('score'))
 	interval= setInterval(addBall, 5000);
 }
 
@@ -210,4 +213,9 @@ function checkIfWon() {
     
 }
 
+// Restart the game
+function restart() {
+    clearInterval(interval); 
+    initGame(); 
+}
 

@@ -10,6 +10,7 @@ var gBoard;
 var gGamerPos;
 
 let Score = 0;
+let gBall=2;
 let interval;
 
 function initGame() {
@@ -17,7 +18,7 @@ function initGame() {
 	gBoard = buildBoard();
 	renderBoard(gBoard);
 
-	interval= setInterval(addBall, 2000);
+	interval= setInterval(addBall, 5000);
 }
 
 
@@ -124,6 +125,10 @@ function moveTo(i, j) {
 		gBoard[gGamerPos.i][gGamerPos.j].gameElement = GAMER;
 		// DOM:
 		renderCell(gGamerPos, GAMER_IMG);
+		setTimeout(() => {
+			checkIfWon(); 
+		}, "100");
+
 
 	} // else console.log('TOO FAR', iAbsDiff, jAbsDiff);
 
@@ -184,6 +189,7 @@ function addBall() {
         var randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
         gBoard[randomCell.i][randomCell.j].gameElement = BALL; 
         renderCell(randomCell, BALL_IMG); 
+		gBall++;
         console.log('new ball', randomCell); 
     }
 }
@@ -192,4 +198,16 @@ function addBall() {
 function renderScore(element) {
 	element.innerHTML = `Score: ${Score}`;
 }
+
+// Check if there are any balls left on the board
+function checkIfWon() {
+	if(gBall != Score)
+	{
+		return
+	}
+    alert('You won!');
+	clearInterval(interval);
+    
+}
+
 

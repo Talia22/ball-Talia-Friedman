@@ -44,6 +44,12 @@ function buildBoard() {
 				cell.type = WALL;
 			}
 
+			//add holes
+			if((i == 0 && j == 5) || (i == board.length - 1 && j == 5) || (i == 4 && j == 0) || (i == 4 && j == board[0].length - 1))
+			{
+				cell.type = FLOOR;
+			}
+
 			// Add created cell to The game board
 			board[i][j] = cell;
 		}
@@ -96,8 +102,23 @@ function renderBoard(board) {
 	elBoard.innerHTML = strHTML;
 }
 
+
 // Move the player to a specific location
 function moveTo(i, j) {
+
+	var flag = true
+	if (i === -1 && j === 5) { 
+		i = gBoard.length - 1; 
+	} else if (i === gBoard.length  && j === 5) { 
+		i = 0;
+	} else if (i === 4 && j === -1) { 
+		j = gBoard[0].length - 1; 
+	} else if (i === 4 && j === gBoard[0].length) { 
+		j = 0; 
+	} else{
+		flag = false
+	}
+
 
 	var targetCell = gBoard[i][j];
 	if (targetCell.type === WALL) return;
@@ -107,7 +128,7 @@ function moveTo(i, j) {
 	var jAbsDiff = Math.abs(j - gGamerPos.j);
 
 	// If the clicked Cell is one of the four allowed
-	if ((iAbsDiff === 1 && jAbsDiff === 0) || (jAbsDiff === 1 && iAbsDiff === 0)) {
+	if ((flag === true)||(iAbsDiff === 1 && jAbsDiff === 0) || (jAbsDiff === 1 && iAbsDiff === 0)) {
 
 		if (targetCell.gameElement === BALL) {
 			Score++;

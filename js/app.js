@@ -8,10 +8,16 @@ var BALL_IMG = '<img src="img/ball.png" />';
 
 var gBoard;
 var gGamerPos;
+
+let Score = 0;
+let interval;
+
 function initGame() {
 	gGamerPos = { i: 2, j: 9 };
 	gBoard = buildBoard();
 	renderBoard(gBoard);
+
+	interval= setInterval(addBall, 2000);
 }
 
 
@@ -100,7 +106,9 @@ function moveTo(i, j) {
 	if ((iAbsDiff === 1 && jAbsDiff === 0) || (jAbsDiff === 1 && iAbsDiff === 0)) {
 
 		if (targetCell.gameElement === BALL) {
-			console.log('Collecting!');
+			Score++;
+			console.log('Collecting!', Score);
+			renderScore(document.getElementById('score'))
 		}
 
 		// MOVING from current position
@@ -158,5 +166,30 @@ function getClassName(location) {
 	var cellClass = 'cell-' + location.i + '-' + location.j;
 	console.log('cellClass:', cellClass);
 	return cellClass;
+}
+
+
+// Function to add a ball to a random floor cell
+function addBall() {
+    var emptyCells = [];
+    for (var i = 1; i < gBoard.length - 1; i++) {
+        for (var j = 1; j < gBoard[0].length - 1; j++) {
+            if (gBoard[i][j].type === FLOOR && gBoard[i][j].gameElement === null) {
+                emptyCells.push({ i: i, j: j });
+            }
+        }
+    }
+
+    if (emptyCells.length > 0) {
+        var randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+        gBoard[randomCell.i][randomCell.j].gameElement = BALL; 
+        renderCell(randomCell, BALL_IMG); 
+        console.log('new ball', randomCell); 
+    }
+}
+
+// render the score
+function renderScore(element) {
+	element.innerHTML = `Score: ${Score}`;
 }
 
